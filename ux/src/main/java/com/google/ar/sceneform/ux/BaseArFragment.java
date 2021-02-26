@@ -531,7 +531,7 @@ public abstract class BaseArFragment extends Fragment
   }
 
   private void start() {
-    if (isStarted) {
+    if (isStarted || arSceneView.isSharedCameraMode()) {
       return;
     }
 

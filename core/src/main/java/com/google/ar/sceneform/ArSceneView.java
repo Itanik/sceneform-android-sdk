@@ -38,6 +38,7 @@ import com.google.ar.sceneform.utilities.Preconditions;
 import java.lang.ref.WeakReference;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
 /** A SurfaceView that integrates with ARCore and renders a scene. */
@@ -48,6 +49,22 @@ public class ArSceneView extends SceneView {
   private static final String REPORTED_ENGINE_VERSION = "1.7";
   private static final float DEFAULT_PIXEL_INTENSITY = 1.0f;
   private static final Color DEFAULT_COLOR_CORRECTION = new Color(1, 1, 1);
+
+  public void setShouldDrawFrame(Boolean should) {
+    shouldDrawFrame.set(should);
+  }
+
+  private AtomicBoolean shouldDrawFrame = new AtomicBoolean(false);
+
+  public boolean isSharedCameraMode() {
+    return isSharedCameraMode;
+  }
+
+  public void setSharedCameraMode(boolean isSharedCameraMode) {
+    this.isSharedCameraMode = isSharedCameraMode;
+  }
+
+  private boolean isSharedCameraMode = false;
 
   /**
    * When the camera has moved this distance, we create a new anchor to which we attach the Hdr
@@ -222,6 +239,8 @@ public class ArSceneView extends SceneView {
    */
   @Override
   public void resume() throws CameraNotAvailableException {
+    if (!isSharedCameraMode)
+      shouldDrawFrame.set(true);
     resumeSession();
     resumeScene();
   }
@@ -290,6 +309,7 @@ public class ArSceneView extends SceneView {
    */
   @Override
   public void pause() {
+    shouldDrawFrame.set(false);
     pauseScene();
     pauseSession();
   }
@@ -419,6 +439,8 @@ public class ArSceneView extends SceneView {
       return false;
     }
 
+    if (!shouldDrawFrame.get()) return false;
+
     if (!pauseResumeTask.isDone()) {
       return false;
     }
@@ -470,7 +492,7 @@ public class ArSceneView extends SceneView {
       Frame frame = currentFrame;
       if (frame != null) {
         // Update the light estimate.
-        updateLightEstimate(frame);
+//        updateLightEstimate(frame);
         // Update the plane renderer.
         planeRenderer.update(frame, getWidth(), getHeight());
       }
