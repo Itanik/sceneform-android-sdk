@@ -42,6 +42,6 @@ android {
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
 
-    api project(":ux")
+    api project(":sceneform-ux")
 //    implementation("com.gorisse.thomas.sceneform:sceneform:1.18.+")
 }

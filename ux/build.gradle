@@ -40,7 +40,7 @@ android {
 
 dependencies {
     // Use the Sceneform SDK built from the source files included in the core folder.
-    api project(":core")
+    api project(":sceneform-core")
 
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
@@ -51,4 +51,4 @@ dependencies {
 
 //preBuild.dependsOn compileUxAssets
 
-apply from: rootProject.file('bintray.gradle')
+//apply from: rootProject.file('bintray.gradle')

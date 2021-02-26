@@ -21,8 +21,8 @@ android {
 }
 
 dependencies {
-    api project(":core")
-    api project(":ux")
+    api project(":sceneform-core")
+    api project(":sceneform-ux")
 }
 
 apply from: rootProject.file('bintray.gradle')
